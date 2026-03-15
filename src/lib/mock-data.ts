@@ -1,3 +1,12 @@
+import phoneSamsung from "@/assets/items/phone-samsung.jpg";
+import laptopHp from "@/assets/items/laptop-hp.jpg";
+import keys from "@/assets/items/keys.jpg";
+import wallet from "@/assets/items/wallet.jpg";
+import idCard from "@/assets/items/id-card.jpg";
+import backpack from "@/assets/items/backpack.jpg";
+import phoneIphone from "@/assets/items/phone-iphone.jpg";
+import laptopThinkpad from "@/assets/items/laptop-thinkpad.jpg";
+
 export type ItemStatus = "lost" | "found";
 export type ItemCategory = "phone" | "laptop" | "keys" | "wallet" | "id-card" | "bag" | "other";
 
@@ -11,7 +20,7 @@ export interface Item {
   status: ItemStatus;
   imageUrl: string;
   contactName: string;
-  isRecent: boolean; // reported within last 60 min
+  isRecent: boolean;
 }
 
 export const CAMPUS_LOCATIONS = [
@@ -48,7 +57,7 @@ export const mockItems: Item[] = [
     location: "Freedom Square",
     date: "2026-03-15",
     status: "found",
-    imageUrl: "",
+    imageUrl: phoneSamsung,
     contactName: "Aisha N.",
     isRecent: true,
   },
@@ -60,7 +69,7 @@ export const mockItems: Item[] = [
     location: "Main Library",
     date: "2026-03-15",
     status: "lost",
-    imageUrl: "",
+    imageUrl: laptopHp,
     contactName: "Brian K.",
     isRecent: true,
   },
@@ -72,7 +81,7 @@ export const mockItems: Item[] = [
     location: "Guild Canteen",
     date: "2026-03-14",
     status: "found",
-    imageUrl: "",
+    imageUrl: keys,
     contactName: "Gloria M.",
     isRecent: false,
   },
@@ -84,7 +93,7 @@ export const mockItems: Item[] = [
     location: "College of Computing (CoCIS)",
     date: "2026-03-14",
     status: "lost",
-    imageUrl: "",
+    imageUrl: wallet,
     contactName: "Dennis O.",
     isRecent: false,
   },
@@ -96,7 +105,7 @@ export const mockItems: Item[] = [
     location: "Senate Building",
     date: "2026-03-13",
     status: "found",
-    imageUrl: "",
+    imageUrl: idCard,
     contactName: "Faith A.",
     isRecent: false,
   },
@@ -108,7 +117,7 @@ export const mockItems: Item[] = [
     location: "Lumumba Hall",
     date: "2026-03-13",
     status: "lost",
-    imageUrl: "",
+    imageUrl: backpack,
     contactName: "Joel T.",
     isRecent: false,
   },
@@ -120,7 +129,7 @@ export const mockItems: Item[] = [
     location: "Mary Stuart Hall",
     date: "2026-03-15",
     status: "lost",
-    imageUrl: "",
+    imageUrl: phoneIphone,
     contactName: "Mercy W.",
     isRecent: true,
   },
@@ -132,7 +141,7 @@ export const mockItems: Item[] = [
     location: "Faculty of Technology",
     date: "2026-03-14",
     status: "found",
-    imageUrl: "",
+    imageUrl: laptopThinkpad,
     contactName: "Patrick S.",
     isRecent: false,
   },
