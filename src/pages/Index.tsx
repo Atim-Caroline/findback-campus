@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
-import { ArrowRight, Shield, Clock, Users } from "lucide-react";
+import { ArrowRight, Shield, Clock, Users, Search, CalendarDays, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import SearchBar from "@/components/SearchBar";
 import ItemCard from "@/components/ItemCard";
-import { mockItems } from "@/lib/mock-data";
+import { mockItems, CATEGORIES, CAMPUS_LOCATIONS } from "@/lib/mock-data";
 import { useState } from "react";
 import heroCampus from "@/assets/hero-campus.jpg";
 
@@ -15,62 +14,136 @@ const stats = [
 ];
 
 export default function HomePage() {
-  const [search, setSearch] = useState("");
+  const [searchName, setSearchName] = useState("");
+  const [category, setCategory] = useState("");
+  const [location, setLocation] = useState("");
   const recentItems = mockItems.slice(0, 4);
-  const filtered = search
+
+  const filtered = searchName
     ? mockItems.filter(
         (item) =>
-          item.title.toLowerCase().includes(search.toLowerCase()) ||
-          item.location.toLowerCase().includes(search.toLowerCase())
+          item.title.toLowerCase().includes(searchName.toLowerCase()) ||
+          item.location.toLowerCase().includes(searchName.toLowerCase())
       )
     : recentItems;
 
   return (
     <div className="min-h-screen">
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0">
-          <img src={heroCampus} alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-background/85 backdrop-blur-sm" />
+      {/* Hero – fullscreen with background */}
+      <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
+        {/* Background image */}
+        <img
+          src={heroCampus}
+          alt="Campus environment"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/55" />
+
+        {/* Large faded background word */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
+          <span className="text-[18vw] font-black tracking-tight text-white/[0.04] leading-none">
+            RECOVER
+          </span>
         </div>
-        <div className="container pt-20 pb-16 md:pt-32 md:pb-24 relative">
+
+        {/* Content */}
+        <div className="relative z-10 container text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 200, damping: 30 }}
+            className="max-w-3xl mx-auto"
+          >
+            <h1 className="text-display text-4xl md:text-6xl lg:text-7xl text-white mb-6 text-balance">
+              Find What Matters{" "}
+              <span className="text-primary">on Campus</span>
+            </h1>
+            <p className="text-lg md:text-xl text-white/75 leading-relaxed mb-12 max-w-2xl mx-auto">
+              Lost something? Found something? CampusFind helps students reconnect
+              with their belongings across Kampala campuses.
+            </p>
+          </motion.div>
+
+          {/* Search panel */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="max-w-3xl mx-auto text-center"
+            transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 30 }}
+            className="max-w-4xl mx-auto"
           >
-            <h1 className="text-display text-4xl md:text-7xl text-foreground text-balance mb-6">
-              Lost it? Found it?{" "}
-              <span className="text-primary">Bring it home.</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-10 max-w-xl mx-auto">
-              The trusted recovery platform for the student community in Kampala. Report, search, and reunite with your belongings.
-            </p>
+            <div className="bg-black/40 backdrop-blur-xl rounded-2xl border border-white/10 p-6 shadow-elevated">
+              <p className="text-white/90 text-sm font-semibold mb-4 text-left">
+                Search for Lost or Found Items
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+                {/* Item name */}
+                <div className="lg:col-span-1">
+                  <input
+                    type="text"
+                    value={searchName}
+                    onChange={(e) => setSearchName(e.target.value)}
+                    placeholder="Phone, Keys, Backpack…"
+                    className="w-full h-12 px-4 rounded-xl bg-white/10 border border-white/15 text-white placeholder:text-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-primary/60 transition"
+                  />
+                </div>
 
-            <div className="mb-8">
-              <SearchBar value={search} onChange={setSearch} placeholder="Search by item or location..." />
-            </div>
+                {/* Category */}
+                <div className="relative lg:col-span-1">
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-full h-12 px-4 rounded-xl bg-white/10 border border-white/15 text-white text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/60 transition"
+                  >
+                    <option value="" className="text-foreground">Category</option>
+                    {CATEGORIES.map((c) => (
+                      <option key={c.value} value={c.value} className="text-foreground">
+                        {c.label}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" />
+                </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Link to="/upload">
-                <Button variant="hero" size="xl">
-                  Report Lost Item
-                  <ArrowRight className="w-5 h-5" />
-                </Button>
-              </Link>
-              <Link to="/upload">
-                <Button variant="hero-outline" size="xl">
-                  Post Found Item
-                </Button>
-              </Link>
+                {/* Location */}
+                <div className="relative lg:col-span-1">
+                  <select
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    className="w-full h-12 px-4 rounded-xl bg-white/10 border border-white/15 text-white text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/60 transition"
+                  >
+                    <option value="" className="text-foreground">Location</option>
+                    {CAMPUS_LOCATIONS.map((loc) => (
+                      <option key={loc} value={loc} className="text-foreground">
+                        {loc}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" />
+                </div>
+
+                {/* Date */}
+                <div className="relative lg:col-span-1">
+                  <input
+                    type="date"
+                    className="w-full h-12 px-4 rounded-xl bg-white/10 border border-white/15 text-white/70 text-sm focus:outline-none focus:ring-2 focus:ring-primary/60 transition"
+                  />
+                  <CalendarDays className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" />
+                </div>
+
+                {/* Search button */}
+                <button className="h-12 rounded-xl bg-search-btn text-search-btn-foreground font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+                  <Search className="w-4 h-4" />
+                  Search
+                </button>
+              </div>
             </div>
           </motion.div>
         </div>
       </section>
 
       {/* Stats */}
-      <section className="container pb-16">
+      <section className="container py-16">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {stats.map((stat, i) => (
             <motion.div
@@ -97,9 +170,9 @@ export default function HomePage() {
       <section className="container pb-20">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-display text-2xl text-foreground">
-            {search ? "Search Results" : "Recent Items"}
+            {searchName ? "Search Results" : "Recent Items"}
           </h2>
-          {!search && (
+          {!searchName && (
             <Link to="/lost" className="text-sm text-primary font-medium hover:underline flex items-center gap-1">
               View all <ArrowRight className="w-4 h-4" />
             </Link>

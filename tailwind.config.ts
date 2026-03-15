@@ -66,6 +66,14 @@ export default {
           "found-bg": "hsl(var(--status-found-bg))",
           "found-fg": "hsl(var(--status-found-fg))",
         },
+        navy: {
+          DEFAULT: "hsl(var(--navy))",
+          foreground: "hsl(var(--navy-foreground))",
+        },
+        "search-btn": {
+          DEFAULT: "hsl(var(--search-btn))",
+          foreground: "hsl(var(--search-btn-foreground))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
