@@ -46,6 +46,10 @@
     --sidebar-ring: 142 71% 45%;
 
     /* CampusFind custom tokens */
+    --navy: 220 40% 13%;
+    --navy-foreground: 210 40% 96%;
+    --search-btn: 15 90% 55%;
+    --search-btn-foreground: 0 0% 100%;
     --shadow-card: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --shadow-elevated: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
     --status-lost-bg: 48 100% 94%;
