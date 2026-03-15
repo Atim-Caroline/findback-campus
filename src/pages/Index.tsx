@@ -6,6 +6,7 @@ import SearchBar from "@/components/SearchBar";
 import ItemCard from "@/components/ItemCard";
 import { mockItems } from "@/lib/mock-data";
 import { useState } from "react";
+import heroCampus from "@/assets/hero-campus.jpg";
 
 const stats = [
   { icon: Shield, value: "94%", label: "Recovery rate with photos" },
@@ -28,7 +29,10 @@ export default function HomePage() {
     <div className="min-h-screen">
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/5 to-transparent pointer-events-none" />
+        <div className="absolute inset-0">
+          <img src={heroCampus} alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-background/85 backdrop-blur-sm" />
+        </div>
         <div className="container pt-20 pb-16 md:pt-32 md:pb-24 relative">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

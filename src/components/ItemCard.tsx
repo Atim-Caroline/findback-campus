@@ -21,8 +21,14 @@ export default function ItemCard({ item, index = 0 }: ItemCardProps) {
       className="bg-card rounded-[20px] shadow-card border border-border overflow-hidden group"
     >
       {/* Image area */}
-      <div className="aspect-[4/3] bg-secondary rounded-[12px] m-3 flex items-center justify-center relative overflow-hidden">
-        <span className="text-5xl">{getCategoryIcon(item.category)}</span>
+      <div className="aspect-[4/3] rounded-[12px] m-3 relative overflow-hidden bg-secondary">
+        {item.imageUrl ? (
+          <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <span className="text-5xl">{getCategoryIcon(item.category)}</span>
+          </div>
+        )}
 
         {/* Status badge */}
         <div className="absolute top-3 left-3">
