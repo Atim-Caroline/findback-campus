@@ -6,6 +6,7 @@ import SearchBar from "@/components/SearchBar";
 import ItemCard from "@/components/ItemCard";
 import { mockItems } from "@/lib/mock-data";
 import { useState } from "react";
+import heroCampus from "@/assets/hero-campus.jpg";
 
 const stats = [
   { icon: Shield, value: "94%", label: "Recovery rate with photos" },
