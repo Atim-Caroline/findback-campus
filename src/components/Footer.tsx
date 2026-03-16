@@ -8,10 +8,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <Link to="/" className="flex items-center gap-2 mb-3">
-              <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center">
-                <Search className="w-3.5 h-3.5 text-primary-foreground" />
+              <div className="w-8 h-8 flex items-center justify-center">
+                <img src="/logo.png" alt="CampusFind Logo" className="w-full h-full object-contain" />
               </div>
-              <span className="text-display text-foreground">CampusFind</span>
+              <div className="text-display text-xl font-extrabold tracking-tighter">
+                <span className="text-primary">Campus</span>
+                <span className="text-search-btn">Find</span>
+              </div>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed max-w-xs">
               Reconnecting the campus community with their belongings. 94% of items with photos are returned within 48 hours.

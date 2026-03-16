@@ -3,7 +3,7 @@ import { ArrowRight, Shield, Clock, Users, Search, CalendarDays, ChevronDown } f
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import ItemCard from "@/components/ItemCard";
-import { mockItems, CATEGORIES, CAMPUS_LOCATIONS } from "@/lib/mock-data";
+import { mockItems, CATEGORIES } from "@/lib/mock-data";
 import { useState } from "react";
 import heroCampus from "@/assets/hero-campus.jpg";
 
@@ -55,9 +55,10 @@ export default function HomePage() {
             transition={{ type: "spring", stiffness: 200, damping: 30 }}
             className="max-w-3xl mx-auto"
           >
-            <h1 className="text-display text-4xl md:text-6xl lg:text-7xl text-white mb-6 text-balance">
+            <h1 className="text-display text-4xl md:text-6xl lg:text-7xl text-white mb-6 text-balance font-extrabold tracking-tighter">
               Find What Matters{" "}
-              <span className="text-primary">on Campus</span>
+              <span className="text-primary">Campus</span>
+              <span className="text-search-btn">Find</span>
             </h1>
             <p className="text-lg md:text-xl text-white/75 leading-relaxed mb-12 max-w-2xl mx-auto">
               Lost something? Found something? CampusFind helps students reconnect
@@ -106,20 +107,14 @@ export default function HomePage() {
                 </div>
 
                 {/* Location */}
-                <div className="relative lg:col-span-1">
-                  <select
+                <div className="lg:col-span-1">
+                  <input
+                    type="text"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full h-12 px-4 rounded-xl bg-white/10 border border-white/15 text-white text-sm appearance-none focus:outline-none focus:ring-2 focus:ring-primary/60 transition"
-                  >
-                    <option value="" className="text-foreground">Location</option>
-                    {CAMPUS_LOCATIONS.map((loc) => (
-                      <option key={loc} value={loc} className="text-foreground">
-                        {loc}
-                      </option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-white/40 pointer-events-none" />
+                    placeholder="Specific Location…"
+                    className="w-full h-12 px-4 rounded-xl bg-white/10 border border-white/15 text-white placeholder:text-white/40 text-sm focus:outline-none focus:ring-2 focus:ring-primary/60 transition"
+                  />
                 </div>
 
                 {/* Date */}

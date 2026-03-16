@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Upload, Camera, MapPin, Calendar } from "lucide-react";
+import { Upload, Camera, MapPin, Calendar, School, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CATEGORIES, CAMPUS_LOCATIONS } from "@/lib/mock-data";
+import { CATEGORIES } from "@/lib/mock-data";
+import { ugandaUniversities, universityDepartments, universityLocations } from "@/lib/university-data";
 import { toast } from "sonner";
 
 export default function UploadItemPage() {
@@ -11,6 +12,8 @@ export default function UploadItemPage() {
     title: "",
     category: "",
     description: "",
+    university: "",
+    department: "",
     location: "",
     date: "",
     contact: "",
@@ -18,12 +21,12 @@ export default function UploadItemPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title || !form.category || !form.location) {
+    if (!form.title || !form.category || !form.location || !form.university) {
       toast.error("Please fill in the required fields.");
       return;
     }
     toast.success("Item reported successfully! The community will help.");
-    setForm({ title: "", category: "", description: "", location: "", date: "", contact: "" });
+    setForm({ title: "", category: "", description: "", university: "", department: "", location: "", date: "", contact: "" });
   };
 
   const inputClass =
@@ -104,19 +107,61 @@ export default function UploadItemPage() {
 
           <div>
             <label className="text-ui-label text-muted-foreground mb-2 block">
-              <MapPin className="w-3 h-3 inline mr-1" />
-              Location *
+              <School className="w-3 h-3 inline mr-1" />
+              University *
             </label>
             <select
-              value={form.location}
-              onChange={(e) => setForm({ ...form, location: e.target.value })}
+              value={form.university}
+              onChange={(e) => setForm({ ...form, university: e.target.value })}
               className={inputClass}
+              required
             >
-              <option value="">Where was it {status === "lost" ? "lost" : "found"}?</option>
-              {CAMPUS_LOCATIONS.map((loc) => (
-                <option key={loc} value={loc}>{loc}</option>
+              <option value="">Select University</option>
+              {ugandaUniversities.map((uni) => (
+                <option key={uni} value={uni}>{uni}</option>
               ))}
             </select>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="text-ui-label text-muted-foreground mb-2 block">
+                <Building2 className="w-3 h-3 inline mr-1" />
+                Department
+              </label>
+              <select
+                value={form.department}
+                onChange={(e) => setForm({ ...form, department: e.target.value })}
+                className={inputClass}
+              >
+                <option value="">Select Department</option>
+                {universityDepartments.map((dept) => (
+                  <option key={dept} value={dept}>{dept}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="text-ui-label text-muted-foreground mb-2 block">
+                <MapPin className="w-3 h-3 inline mr-1" />
+                Location *
+              </label>
+              <select
+                value={form.location}
+                onChange={(e) => setForm({ ...form, location: e.target.value })}
+                className={inputClass}
+                required
+              >
+                <option value="">Where was it {status === "lost" ? "lost" : "found"}?</option>
+                {universityLocations.map((cat) => (
+                  <optgroup key={cat.category} label={cat.category}>
+                    {cat.locations.map((loc) => (
+                      <option key={loc} value={loc}>{loc}</option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </div>
           </div>
 
           <div>

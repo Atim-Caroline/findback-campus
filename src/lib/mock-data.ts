@@ -15,6 +15,8 @@ export interface Item {
   title: string;
   category: ItemCategory;
   description: string;
+  university: string;
+  department: string;
   location: string;
   date: string;
   status: ItemStatus;
@@ -22,21 +24,6 @@ export interface Item {
   contactName: string;
   isRecent: boolean;
 }
-
-export const CAMPUS_LOCATIONS = [
-  "Main Library",
-  "Freedom Square",
-  "Mary Stuart Hall",
-  "Guild Canteen",
-  "College of Computing (CoCIS)",
-  "School of Law",
-  "Senate Building",
-  "Lumumba Hall",
-  "Mitchell Hall",
-  "MUBS Main Campus",
-  "Kyambogo Main Gate",
-  "Faculty of Technology",
-];
 
 export const CATEGORIES: { value: ItemCategory; label: string; icon: string }[] = [
   { value: "phone", label: "Phone", icon: "📱" },
@@ -54,6 +41,8 @@ export const mockItems: Item[] = [
     title: "Samsung Galaxy A54",
     category: "phone",
     description: "Black Samsung phone with a cracked screen protector. Found near the benches.",
+    university: "Makerere University (MAK)",
+    department: "Faculty of Arts and Social Sciences",
     location: "Freedom Square",
     date: "2026-03-15",
     status: "found",
@@ -66,6 +55,8 @@ export const mockItems: Item[] = [
     title: "HP EliteBook Laptop",
     category: "laptop",
     description: "Silver HP laptop in a black sleeve. Has stickers on the back cover.",
+    university: "Makerere University (MAK)",
+    department: "Faculty of Science",
     location: "Main Library",
     date: "2026-03-15",
     status: "lost",
@@ -78,7 +69,9 @@ export const mockItems: Item[] = [
     title: "Car & House Keys",
     category: "keys",
     description: "Set of 4 keys on a blue Toyota keychain.",
-    location: "Guild Canteen",
+    university: "Victoria University Kampala",
+    department: "Faculty of Business and Management",
+    location: "Student Center",
     date: "2026-03-14",
     status: "found",
     imageUrl: keys,
@@ -89,8 +82,10 @@ export const mockItems: Item[] = [
     id: "4",
     title: "Brown Leather Wallet",
     category: "wallet",
-    description: "Contains Stanbic bank card and a student ID for Makerere.",
-    location: "College of Computing (CoCIS)",
+    description: "Contains Stanbic bank card and a student ID.",
+    university: "Makerere University Business School (MUBS)",
+    department: "Faculty of Computing and Information Technology",
+    location: "Main Campus",
     date: "2026-03-14",
     status: "lost",
     imageUrl: wallet,
@@ -101,8 +96,10 @@ export const mockItems: Item[] = [
     id: "5",
     title: "Student ID Card",
     category: "id-card",
-    description: "Makerere University student ID. Name partially visible.",
-    location: "Senate Building",
+    description: "University student ID. Name partially visible.",
+    university: "Cavendish University Uganda",
+    department: "Faculty of Law",
+    location: "Administration Block",
     date: "2026-03-13",
     status: "found",
     imageUrl: idCard,
@@ -114,7 +111,9 @@ export const mockItems: Item[] = [
     title: "Nike Backpack",
     category: "bag",
     description: "Grey Nike backpack with textbooks and a water bottle inside.",
-    location: "Lumumba Hall",
+    university: "Kyambogo University (KYU)",
+    department: "School of Psychology",
+    location: "Main Campus",
     date: "2026-03-13",
     status: "lost",
     imageUrl: backpack,
@@ -126,7 +125,9 @@ export const mockItems: Item[] = [
     title: "iPhone 13 Pro",
     category: "phone",
     description: "Space grey iPhone with a clear case. Lock screen has a sunset photo.",
-    location: "Mary Stuart Hall",
+    university: "International University of East Africa (IUEA)",
+    department: "Faculty of Engineering",
+    location: "University Library",
     date: "2026-03-15",
     status: "lost",
     imageUrl: phoneIphone,
@@ -138,7 +139,9 @@ export const mockItems: Item[] = [
     title: "Lenovo ThinkPad",
     category: "laptop",
     description: "Black ThinkPad with a red trackpoint. Found unattended.",
-    location: "Faculty of Technology",
+    university: "Kampala International University (KIU)",
+    department: "Faculty of Medicine / Health Sciences",
+    location: "Medical School Campus",
     date: "2026-03-14",
     status: "found",
     imageUrl: laptopThinkpad,
