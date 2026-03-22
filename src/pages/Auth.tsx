@@ -21,7 +21,6 @@ import { ugandaUniversities, universityDepartments, universityLocations } from "
 const Auth = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("login");
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,7 +57,7 @@ const Auth = () => {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <Tabs defaultValue="login" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="login">Sign In</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -89,17 +88,6 @@ const Auth = () => {
                   {isLoading ? "Signing in..." : "Sign In"}
                 </Button>
               </form>
-              <div className="text-center mt-4">
-                <p className="text-sm text-muted-foreground">
-                  Don't have an account?{" "}
-                  <button 
-                    onClick={() => setActiveTab("signup")}
-                    className="text-primary hover:underline font-medium"
-                  >
-                    Sign Up
-                  </button>
-                </p>
-              </div>
             </TabsContent>
 
             <TabsContent value="signup" className="space-y-4">
@@ -189,17 +177,6 @@ const Auth = () => {
                   {isLoading ? "Creating account..." : "Create Account"}
                 </Button>
               </form>
-              <div className="text-center mt-4">
-                <p className="text-sm text-muted-foreground">
-                  Already have an account?{" "}
-                  <button 
-                    onClick={() => setActiveTab("login")}
-                    className="text-primary hover:underline font-medium"
-                  >
-                    Sign In
-                  </button>
-                </p>
-              </div>
             </TabsContent>
           </Tabs>
 
