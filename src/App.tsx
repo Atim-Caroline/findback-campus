@@ -10,7 +10,6 @@ import LostItems from "./pages/LostItems";
 import FoundItems from "./pages/FoundItems";
 import UploadItem from "./pages/UploadItem";
 import Chat from "./pages/Chat";
-import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,7 +29,6 @@ const App = () => (
               <Route path="/found" element={<FoundItems />} />
               <Route path="/upload" element={<UploadItem />} />
               <Route path="/chat" element={<Chat />} />
-              <Route path="/auth" element={<Auth />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </main>

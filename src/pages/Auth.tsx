@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Mail, Lock, User, Github, Chrome, Apple, School, Building2, MapPin } from "lucide-react";
+import { Mail, Lock, User, Github, School, Building2, MapPin } from "lucide-react";
 import { toast } from "sonner";
 import {
   Select,
@@ -44,8 +44,12 @@ const Auth = () => {
       <Card className="w-full max-w-lg shadow-lg border-none my-8">
         <CardHeader className="space-y-1 text-center">
           <div className="flex justify-center mb-4">
-            <div className="w-16 h-16">
-              <img src="/logo.png" alt="CampusFind Logo" className="w-full h-full object-contain" />
+            <div className="w-16 h-16 rounded-full bg-slate-50 flex items-center justify-center p-2 border border-slate-100 shadow-sm overflow-hidden">
+              <img 
+                src="/logo.png" 
+                alt="CampusFind Logo" 
+                className="w-full h-full object-contain mix-blend-multiply" 
+              />
             </div>
           </div>
           <div className="text-2xl font-extrabold tracking-tighter">
@@ -88,6 +92,26 @@ const Auth = () => {
                   {isLoading ? "Signing in..." : "Sign In"}
                 </Button>
               </form>
+              
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('Google')}>
+                  <img src="/google-icon.png" alt="Google" className="mr-2 h-4 w-4 object-contain" />
+                  Google
+                </Button>
+                <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('Apple')}>
+                  <img src="/apple-icon.png" alt="Apple" className="mr-2 h-4 w-4 object-contain" />
+                  Apple
+                </Button>
+              </div>
             </TabsContent>
 
             <TabsContent value="signup" className="space-y-4">
@@ -177,28 +201,28 @@ const Auth = () => {
                   {isLoading ? "Creating account..." : "Create Account"}
                 </Button>
               </form>
+              
+              <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                  <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('Google')}>
+                  <img src="/google-icon.png" alt="Google" className="mr-2 h-4 w-4 object-contain" />
+                  Google
+                </Button>
+                <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('Apple')}>
+                  <img src="/apple-icon.png" alt="Apple" className="mr-2 h-4 w-4 object-contain" />
+                  Apple
+                </Button>
+              </div>
             </TabsContent>
           </Tabs>
-
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('Google')}>
-              <Chrome className="mr-2 h-4 w-4" />
-              Google
-            </Button>
-            <Button variant="outline" className="w-full" onClick={() => handleSocialLogin('Apple')}>
-              <Apple className="mr-2 h-4 w-4" />
-              Apple
-            </Button>
-          </div>
         </CardContent>
         <CardFooter className="flex flex-col space-y-2 text-center text-xs text-muted-foreground">
           <p>

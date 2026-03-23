@@ -62,7 +62,7 @@ export default function HomePage() {
             </h1>
             <p className="text-lg md:text-xl text-white/75 leading-relaxed mb-12 max-w-2xl mx-auto">
               Lost something? Found something? CampusFind helps students reconnect
-              with their belongings across Kampala campuses.
+              with their belongings across Uganda campuses.
             </p>
           </motion.div>
 

@@ -1,8 +1,15 @@
 import { Link, useLocation } from "react-router-dom";
-import { Search, Menu, X, MapPin, User } from "lucide-react";
+import { Search, Menu, X, MapPin, User, Bell } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "./ui/button";
+
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { mockItems } from "@/lib/mock-data";
 
 const navLinks = [
   { to: "/", label: "Home" },
@@ -21,11 +28,11 @@ export default function Navbar() {
       <div className="container flex items-center justify-between h-16">
         {/* Logo */}
         <Link to="/" className="flex items-center gap-2.5">
-          <div className="w-10 h-10 flex items-center justify-center overflow-hidden">
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center p-1.5 shadow-sm border border-white/10 overflow-hidden">
             <img 
               src="/logo.png" 
               alt="CampusFind Logo" 
-              className="w-full h-full object-contain" 
+              className="w-full h-full object-contain mix-blend-multiply" 
             />
           </div>
           <div className="flex items-center gap-0.5 text-xl font-extrabold tracking-tighter">
@@ -51,11 +58,58 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Search button & Auth */}
+        {/* Auth button */}
         <div className="hidden lg:flex items-center gap-4">
-          <button className="w-10 h-10 rounded-lg bg-search-btn flex items-center justify-center hover:opacity-90 transition-opacity">
-            <Search className="w-5 h-5 text-search-btn-foreground" />
-          </button>
+          <Popover>
+            <PopoverTrigger asChild>
+              <button className="relative p-2 rounded-lg text-white hover:bg-white/10 transition-colors">
+                <Bell className="w-5 h-5" />
+                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-navy" />
+              </button>
+            </PopoverTrigger>
+            <PopoverContent className="w-80 p-0 bg-card border-border shadow-xl" align="end">
+              <div className="p-4 border-b border-border">
+                <h3 className="font-semibold text-sm">Notifications</h3>
+              </div>
+              <div className="max-h-[400px] overflow-y-auto">
+                {/* Simulated Notification 1: Match */}
+                <Link to="/item/1" onClick={() => setIsOpen(false)}>
+                  <div className="p-4 border-b border-border hover:bg-secondary/50 transition-colors cursor-pointer">
+                    <div className="flex gap-3">
+                      <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
+                        <Search className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <p className="text-xs font-medium text-foreground">New Match Found!</p>
+                        <p className="text-[11px] text-muted-foreground mt-0.5">
+                          A "Samsung Galaxy" has been reported found at Freedom Square. This might be your lost item!
+                        </p>
+                        <span className="text-[10px] text-primary font-medium mt-1 inline-block">View Details</span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+                {/* Simulated Notification 2: Message */}
+                <div className="p-4 hover:bg-secondary/50 transition-colors cursor-pointer">
+                  <div className="flex gap-3">
+                    <div className="w-10 h-10 rounded-full bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-foreground">Message from Patrick S.</p>
+                      <p className="text-[11px] text-muted-foreground mt-0.5">
+                        "Hey, I think I found your laptop. Can we meet at the library?"
+                      </p>
+                      <span className="text-[10px] text-primary font-medium mt-1 inline-block">Reply Now</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="p-2 text-center border-t border-border">
+                <Button variant="ghost" size="sm" className="text-[11px] h-8 w-full">View all notifications</Button>
+              </div>
+            </PopoverContent>
+          </Popover>
           <Link to="/auth">
             <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
               <User className="mr-2 h-4 w-4" />
@@ -65,12 +119,18 @@ export default function Navbar() {
         </div>
 
         {/* Mobile toggle */}
-        <button
-          className="lg:hidden p-2 rounded-lg text-white hover:bg-white/10"
-          onClick={() => setMobileOpen(!mobileOpen)}
-        >
-          {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="lg:hidden flex items-center gap-2">
+          <button className="relative p-2 rounded-lg text-white hover:bg-white/10 transition-colors mr-1">
+            <Bell className="w-5 h-5" />
+            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border border-navy" />
+          </button>
+          <button
+            className="p-2 rounded-lg text-white hover:bg-white/10"
+            onClick={() => setMobileOpen(!mobileOpen)}
+          >
+            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

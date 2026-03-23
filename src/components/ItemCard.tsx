@@ -45,9 +45,9 @@ export default function ItemCard({ item, index = 0 }: ItemCardProps) {
       </div>
 
       {/* Content */}
-      <div className="px-4 pb-4 flex flex-col flex-1">
+      <Link to={`/item/${item.id}`} className="px-4 pb-4 flex flex-col flex-1 cursor-pointer">
         <div className="mb-2">
-          <h3 className="font-semibold text-foreground text-base mb-1 truncate">{item.title}</h3>
+          <h3 className="font-semibold text-foreground text-base mb-1 truncate group-hover:text-primary transition-colors">{item.title}</h3>
           <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed h-8">{item.description}</p>
         </div>
 
@@ -74,9 +74,11 @@ export default function ItemCard({ item, index = 0 }: ItemCardProps) {
             {getTimeAgo(item.date)}
           </div>
         </div>
+      </Link>
 
-        {/* Actions */}
-        <div className="flex items-center justify-between pt-3 border-t border-border mt-auto">
+      {/* Actions */}
+      <div className="px-4 pb-4 mt-auto">
+        <div className="flex items-center justify-between pt-3 border-t border-border">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs font-bold border border-primary/20">
               {item.contactName.charAt(0)}

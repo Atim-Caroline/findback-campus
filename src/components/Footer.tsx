@@ -8,8 +8,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <Link to="/" className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 flex items-center justify-center">
-                <img src="/logo.png" alt="CampusFind Logo" className="w-full h-full object-contain" />
+              <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center p-2 border border-slate-100 shadow-sm overflow-hidden">
+                <img 
+                  src="/logo.png" 
+                  alt="CampusFind Logo" 
+                  className="w-full h-full object-contain mix-blend-multiply" 
+                />
               </div>
               <div className="text-display text-xl font-extrabold tracking-tighter">
                 <span className="text-primary">Campus</span>
@@ -36,7 +40,7 @@ export default function Footer() {
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin className="w-4 h-4" />
-                Kampala, Uganda
+                Uganda
               </div>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Mail className="w-4 h-4" />
