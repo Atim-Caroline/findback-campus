@@ -3,6 +3,7 @@ import { Search, Menu, X, MapPin, User, Bell } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "./ui/button";
+import { useAuth } from "@/hooks/use-auth";
 
 import {
   Popover,
@@ -22,6 +23,11 @@ const navLinks = [
 export default function Navbar() {
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isAuthenticated, logout } = useAuth();
+
+  const handleSignOut = () => {
+    logout();
+  };
 
   return (
     <nav className="sticky top-0 z-50 bg-navy">
@@ -73,7 +79,7 @@ export default function Navbar() {
               </div>
               <div className="max-h-[400px] overflow-y-auto">
                 {/* Simulated Notification 1: Match */}
-                <Link to="/item/1" onClick={() => setIsOpen(false)}>
+                <Link to="/item/1">
                   <div className="p-4 border-b border-border hover:bg-secondary/50 transition-colors cursor-pointer">
                     <div className="flex gap-3">
                       <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0">
@@ -110,12 +116,28 @@ export default function Navbar() {
               </div>
             </PopoverContent>
           </Popover>
-          <Link to="/auth">
-            <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
-              <User className="mr-2 h-4 w-4" />
-              Sign In
-            </Button>
-          </Link>
+          {isAuthenticated ? (
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary border border-primary/20">
+                <User className="w-4 h-4" />
+              </div>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                className="text-white border-white/20 hover:bg-white/10 h-9"
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </Button>
+            </div>
+          ) : (
+            <Link to="/auth">
+              <Button className="bg-primary hover:bg-primary/90 text-white shadow-md">
+                <User className="mr-2 h-4 w-4" />
+                Sign In
+              </Button>
+            </Link>
+          )}
         </div>
 
         {/* Mobile toggle */}
@@ -157,13 +179,25 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <div className="pt-2">
-                <Link to="/auth" onClick={() => setMobileOpen(false)}>
-                  <Button className="w-full bg-primary hover:bg-primary/90">
-                    <User className="mr-2 h-4 w-4" />
-                    Sign In
+              <div className="pt-2 px-4 pb-4">
+                {isAuthenticated ? (
+                  <Button 
+                    className="w-full bg-white/10 hover:bg-white/20 text-white"
+                    onClick={() => {
+                      handleSignOut();
+                      setMobileOpen(false);
+                    }}
+                  >
+                    Sign Out
                   </Button>
-                </Link>
+                ) : (
+                  <Link to="/auth" onClick={() => setMobileOpen(false)}>
+                    <Button className="w-full bg-primary hover:bg-primary/90">
+                      <User className="mr-2 h-4 w-4" />
+                      Sign In
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </motion.div>

@@ -1,11 +1,17 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, Shield, Clock, Users, Search, CalendarDays, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import ItemCard from "@/components/ItemCard";
 import { mockItems, CATEGORIES } from "@/lib/mock-data";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import heroCampus from "@/assets/hero-campus.jpg";
+
+const heroSlides = [
+  { src: heroCampus, alt: "Campus environment" },
+  { src: "/o.jpg", alt: "Campus scene" },
+  { src: "/22.jpg", alt: "Campus scene 2" },
+];
 
 const stats = [
   { icon: Shield, value: "94%", label: "Recovery rate with photos" },
@@ -17,7 +23,15 @@ export default function HomePage() {
   const [searchName, setSearchName] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
+  const [slideIndex, setSlideIndex] = useState(0);
   const recentItems = mockItems.slice(0, 4);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSlideIndex((i) => (i + 1) % heroSlides.length);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
 
   const filtered = searchName
     ? mockItems.filter(
@@ -31,14 +45,32 @@ export default function HomePage() {
     <div className="min-h-screen">
       {/* Hero – fullscreen with background */}
       <section className="relative min-h-[92vh] flex items-center justify-center overflow-hidden">
-        {/* Background image */}
-        <img
-          src={heroCampus}
-          alt="Campus environment"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+        {/* Background slideshow */}
+        <AnimatePresence>
+          <motion.img
+            key={slideIndex}
+            src={heroSlides[slideIndex].src}
+            alt={heroSlides[slideIndex].alt}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        </AnimatePresence>
         {/* Dark overlay */}
         <div className="absolute inset-0 bg-black/55" />
+
+        {/* Slide dots */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+          {heroSlides.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setSlideIndex(i)}
+              className={`w-2 h-2 rounded-full transition-all ${i === slideIndex ? "bg-white w-6" : "bg-white/40"}`}
+            />
+          ))}
+        </div>
 
         {/* Large faded background word */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
@@ -60,7 +92,7 @@ export default function HomePage() {
               <span className="text-primary">Campus</span>
               <span className="text-search-btn">Find</span>
             </h1>
-            <p className="text-lg md:text-xl text-white/75 leading-relaxed mb-12 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl leading-relaxed mb-12 max-w-2xl mx-auto font-medium italic tracking-wide" style={{ fontFamily: "Georgia, serif", color: "rgba(255,255,255,0.85)" }}>
               Lost something? Found something? CampusFind helps students reconnect
               with their belongings across Uganda campuses.
             </p>

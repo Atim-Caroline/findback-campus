@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Send, ArrowLeft } from "lucide-react";
+import { Send, ArrowLeft, ImagePlus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "react-router-dom";
 
 interface Conversation {
   id: string;
@@ -10,13 +11,8 @@ interface Conversation {
   time: string;
   unread: number;
   itemRef: string;
+  isNew?: boolean;
 }
-
-const mockConversations: Conversation[] = [
-  { id: "1", name: "Aisha N.", lastMessage: "I think that's my phone!", time: "2m ago", unread: 2, itemRef: "Samsung Galaxy A54" },
-  { id: "2", name: "Gloria M.", lastMessage: "Can we meet at the guild?", time: "1h ago", unread: 0, itemRef: "Car & House Keys" },
-  { id: "3", name: "Faith A.", lastMessage: "My student number is 21/U/...", time: "3h ago", unread: 1, itemRef: "Student ID Card" },
-];
 
 interface Message {
   id: string;
@@ -25,19 +21,68 @@ interface Message {
   time: string;
 }
 
-const mockMessages: Message[] = [
-  { id: "1", text: "Hi! I saw your post about the Samsung phone found at Freedom Square.", sender: "other", time: "2:30 PM" },
-  { id: "2", text: "Yes! Can you describe it to verify ownership?", sender: "me", time: "2:31 PM" },
-  { id: "3", text: "It has a cracked screen protector and the lock screen is a photo of a cat 🐱", sender: "other", time: "2:32 PM" },
-  { id: "4", text: "That matches! Let's arrange a meetup. Are you free at the Guild Canteen around 4 PM?", sender: "me", time: "2:33 PM" },
-  { id: "5", text: "I think that's my phone!", sender: "other", time: "2:34 PM" },
+const defaultConversations: Conversation[] = [
+  { id: "1", name: "Aisha N.", lastMessage: "I think that's my phone!", time: "2m ago", unread: 2, itemRef: "Samsung Galaxy A54" },
+  { id: "2", name: "Gloria M.", lastMessage: "Can we meet at the guild?", time: "1h ago", unread: 0, itemRef: "Car & House Keys" },
+  { id: "3", name: "Faith A.", lastMessage: "My student number is 21/U/...", time: "3h ago", unread: 1, itemRef: "Student ID Card" },
 ];
 
-export default function ChatPage() {
-  const [activeConvo, setActiveConvo] = useState<string | null>(null);
-  const [message, setMessage] = useState("");
+const defaultMessages: Record<string, Message[]> = {
+  "1": [
+    { id: "1", text: "Hi! I saw your post about the Samsung phone found at Freedom Square.", sender: "other", time: "2:30 PM" },
+    { id: "2", text: "Yes! Can you describe it to verify ownership?", sender: "me", time: "2:31 PM" },
+    { id: "3", text: "It has a cracked screen protector and the lock screen is a photo of a cat 🐱", sender: "other", time: "2:32 PM" },
+    { id: "4", text: "That matches! Let's arrange a meetup. Are you free at the Guild Canteen around 4 PM?", sender: "me", time: "2:33 PM" },
+    { id: "5", text: "I think that's my phone!", sender: "other", time: "2:34 PM" },
+  ],
+  "2": [
+    { id: "1", text: "Hi Gloria, I found your keys at the library.", sender: "me", time: "1:00 PM" },
+    { id: "2", text: "Can we meet at the guild?", sender: "other", time: "1:05 PM" },
+  ],
+  "3": [
+    { id: "1", text: "Hi, I think I found your student ID.", sender: "me", time: "10:00 AM" },
+    { id: "2", text: "My student number is 21/U/...", sender: "other", time: "10:05 AM" },
+  ],
+};
 
-  const active = mockConversations.find((c) => c.id === activeConvo);
+export default function ChatPage() {
+  const [conversations, setConversations] = useState<Conversation[]>(defaultConversations);
+  const [messages, setMessages] = useState<Record<string, Message[]>>(defaultMessages);
+  const [activeConvo, setActiveConvo] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    const contactName = searchParams.get("contact");
+    const itemRef = searchParams.get("item");
+    const id = searchParams.get("id");
+    if (!contactName || !id) return;
+
+    setConversations((prev) => {
+      const exists = prev.find((c) => c.id === id);
+      if (exists) return prev;
+      return [
+        { id, name: contactName, lastMessage: "Tap to start chatting", time: "Now", unread: 0, itemRef: itemRef ?? "", isNew: true },
+        ...prev,
+      ];
+    });
+
+    setMessages((prev) => ({
+      ...prev,
+      [id]: prev[id] ?? [],
+    }));
+
+    setActiveConvo(id);
+  }, [searchParams]);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) setImagePreview(URL.createObjectURL(file));
+  };
+
+  const active = conversations.find((c) => c.id === activeConvo);
+  const activeMessages = activeConvo ? (messages[activeConvo] ?? []) : [];
 
   return (
     <div className="container py-4 md:py-8">
@@ -48,7 +93,7 @@ export default function ChatPage() {
             <h2 className="text-display text-lg text-foreground">Messages</h2>
           </div>
           <div className="flex-1 overflow-y-auto">
-            {mockConversations.map((convo) => (
+            {conversations.map((convo) => (
               <button
                 key={convo.id}
                 onClick={() => setActiveConvo(convo.id)}
@@ -87,7 +132,7 @@ export default function ChatPage() {
                 <button onClick={() => setActiveConvo(null)} className="md:hidden p-1">
                   <ArrowLeft className="w-5 h-5" />
                 </button>
-                <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold">
+                <div className="w-9 h-9 rounded-full bg-primary/10 text-primary flex items-center justify-center text-sm font-bold border border-primary/20">
                   {active.name.charAt(0)}
                 </div>
                 <div>
@@ -97,39 +142,62 @@ export default function ChatPage() {
               </div>
 
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                {mockMessages.map((msg) => (
-                  <motion.div
-                    key={msg.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}
-                  >
-                    <div
-                      className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm ${
-                        msg.sender === "me"
-                          ? "bg-primary text-primary-foreground rounded-br-md"
-                          : "bg-secondary text-secondary-foreground rounded-bl-md"
-                      }`}
-                    >
-                      <p>{msg.text}</p>
-                      <p className={`text-[10px] mt-1 ${msg.sender === "me" ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
-                        {msg.time}
-                      </p>
+                {activeMessages.length === 0 ? (
+                  <div className="flex flex-col items-center justify-center h-full text-center gap-2">
+                    <div className="w-14 h-14 rounded-full bg-primary/10 text-primary flex items-center justify-center text-2xl font-bold">
+                      {active.name.charAt(0)}
                     </div>
-                  </motion.div>
-                ))}
+                    <p className="font-semibold text-foreground">{active.name}</p>
+                    <p className="text-xs text-muted-foreground">RE: {active.itemRef}</p>
+                    <p className="text-sm text-muted-foreground mt-2">Send an image to start the conversation.</p>
+                  </div>
+                ) : (
+                  activeMessages.map((msg) => (
+                    <motion.div
+                      key={msg.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`flex ${msg.sender === "me" ? "justify-end" : "justify-start"}`}
+                    >
+                      <div
+                        className={`max-w-[80%] px-4 py-2.5 rounded-2xl text-sm ${
+                          msg.sender === "me"
+                            ? "bg-primary text-primary-foreground rounded-br-md"
+                            : "bg-secondary text-secondary-foreground rounded-bl-md"
+                        }`}
+                      >
+                        <p>{msg.text}</p>
+                        <p className={`text-[10px] mt-1 ${msg.sender === "me" ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                          {msg.time}
+                        </p>
+                      </div>
+                    </motion.div>
+                  ))
+                )}
               </div>
 
               <div className="p-4 border-t border-border">
+                {imagePreview && (
+                  <div className="relative inline-block mb-2">
+                    <img src={imagePreview} alt="preview" className="h-20 w-20 object-cover rounded-xl border border-border" />
+                    <button
+                      onClick={() => { setImagePreview(null); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+                      className="absolute -top-2 -right-2 w-5 h-5 bg-destructive text-white rounded-full flex items-center justify-center"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                )}
                 <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Type a message..."
-                    className="flex-1 h-12 px-4 rounded-xl bg-secondary border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring text-sm"
-                  />
-                  <Button variant="default" size="icon" className="h-12 w-12 rounded-xl">
+                  <input ref={fileInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="h-12 w-12 rounded-xl bg-secondary border border-border flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors shrink-0"
+                  >
+                    <ImagePlus className="w-5 h-5" />
+                  </button>
+                  <Button variant="default" size="icon" className="h-12 w-12 rounded-xl shrink-0">
                     <Send className="w-5 h-5" />
                   </Button>
                 </div>

@@ -32,7 +32,7 @@ export default function LostItemsPage() {
   return (
     <div className="container py-8">
       <h1 className="text-display text-3xl text-foreground mb-2">Lost Items</h1>
-      <p className="text-muted-foreground mb-6">Help the community find what they've lost.</p>
+      <p className="mb-6 text-base font-medium italic tracking-wide" style={{ fontFamily: "Georgia, serif", color: "hsl(var(--muted-foreground))" }}>Help the community find what they've lost.</p>
 
       <div className="space-y-4 mb-8">
         <SearchBar value={search} onChange={setSearch} placeholder="Search lost items..." />
